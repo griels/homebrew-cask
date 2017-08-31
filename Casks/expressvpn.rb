@@ -6,5 +6,6 @@ cask 'expressvpn' do
   name 'ExpressVPN'
   homepage 'https://www.expressvpn.com/setup'
 
-  app "ExpressVPN.app"
+  pkg "expressvpn-install_v#{version}.pkg"
+  uninstall pkgutil:'com.expressvpn.ExpressVPN'
 end
