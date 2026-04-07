@@ -1,0 +1,36 @@
+cask "visual-paradigm-ce" do
+  arch arm: "AArch64", intel: "WithJRE"
+
+  version "18.0,20260303"
+  sha256 arm:   "c08047bdb35774112b963a3d3dc10cf96ed9b124ac28814d9c40003df5cec71b",
+         intel: "25f4f5b534e5b6e109b5ded5ce50b8cce0362840cca255c20d2f84b67249a00f"
+
+  on_arm do
+    disable! date: "2026-09-01", because: :fails_gatekeeper_check
+  end
+
+  url "https://www.visual-paradigm.com/downloads/vpce/Visual_Paradigm_CE_#{version.csv.first.dots_to_underscores}_#{version.csv.second}_OSX_#{arch}.dmg"
+  name "Visual Paradigm Community Edition"
+  desc "UML, SysML, BPMN modelling platform"
+  homepage "https://www.visual-paradigm.com/"
+
+  livecheck do
+    url "https://www.visual-paradigm.com/downloads/vpce/checksum.html"
+    regex(%r{/vpce(\d+(?:\.\d+)+)/(\d+)/checksum\.html}i)
+    strategy :header_match do |headers, regex|
+      match = headers["location"]&.match(regex)
+      next if match.blank?
+
+      "#{match[1]},#{match[2]}"
+    end
+  end
+
+  # Renamed to avoid conflict with visual-paradigm.
+  app "Visual Paradigm.app", target: "Visual Paradigm CE.app"
+
+  zap trash: [
+    "~/Library/Application Support/Visual Paradigm",
+    "~/Library/Application Support/VisualParadigm",
+    "~/Library/Saved Application State/com.install4j.1106-5897-7327-6550.5.savedState",
+  ]
+end

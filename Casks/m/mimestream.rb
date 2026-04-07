@@ -1,0 +1,27 @@
+cask "mimestream" do
+  version "1.9.17"
+  sha256 "dac2a8dca3bef973db0b48778010ea6849d0264c1fa73d0f92cda6846d88cbea"
+
+  url "https://download.mimestream.com/Mimestream_#{version}.dmg"
+  name "Mimestream"
+  desc "Native app email client for Gmail"
+  homepage "https://mimestream.com/"
+
+  livecheck do
+    url "https://mimestream.com/appcast.xml"
+    strategy :sparkle, &:short_version
+  end
+
+  auto_updates true
+  depends_on macos: ">= :monterey"
+
+  app "Mimestream.app"
+
+  zap trash: [
+    "~/Library/Application Scripts/com.mimestream.Mimestream*",
+    "~/Library/Caches/com.mimestream.Mimestream",
+    "~/Library/Containers/com.mimestream.Mimestream*",
+    "~/Library/Preferences/com.mimestream.Mimestream.plist",
+    "~/Library/Saved Application State/com.mimestream.Mimestream.savedState",
+  ]
+end
